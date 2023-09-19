@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -12,66 +12,32 @@ import {
   Alert,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+//import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { Foundation } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import userService from "../../services/userservices";
-import jwtDecode from "jwt-decode";
-
-import virusimage from "../../assets/injectionimage.jpg";
-// import logo from "../../assets/logo.png";
-import myURL from "../../services/myurls";
-import UserProfile from "./Profile";
-
-import PersonalModel from "../../components/user/PersonalModel";
 import axios from "axios";
-//import { useRoute } from '@react-navigation/native';
+import myURL from "../../services/myurls";
+import clinicProfile from "./clinicProfile";
 
-const Homeuser = ({ navigation }) => {
-  // const route = useRoute();
-  // const token = route.params?.mytok;
+import virusimage from "../../assets/viirus.jpg";
+import ClinicModel from "../../components/clinic/ClinicModel";
 
+const Homeclinic = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
   const [Tokendata, setTokenData] = useState([]);
   const [CheckProfile, setCheckProfile] = useState([]);
-
-  useEffect(() => {
-    getLoggedInUser();
-  }, []);
-
-  getLoggedInUser = async () => {
-    try {
-      const storedToken = await AsyncStorage.getItem("token");
-      console.log("Retrieved token:", storedToken);
-      setTokenData(jwtDecode(storedToken));
-      //setTokenData(storedToken);  //older
-
-      return storedToken;
-    } catch (error) {
-      console.error("Error retrieving token:", error);
-      return null;
-    }
-  };
-
-  const [modalVisible, setModalVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     // <SafeAreaView>
     <View style={{ flex: 1, backgroundColor: "#329998" }}>
       <ScrollView>
         <View style={styles.slider}>
-          <Image
-            source={virusimage}
-            style={{
-              width: "100%",
-              height: 200,
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-            }}
-          />
+          <Image source={virusimage} style={{ width: "100%", height: 200 }} />
         </View>
         <View
           style={{
@@ -81,17 +47,9 @@ const Homeuser = ({ navigation }) => {
             marginRight: 30,
           }}
         >
-          <Pressable
-            onPress={() => {
-              navigation.navigate("Login");
-            }}
-          >
-            <Text> logout </Text>
-          </Pressable>
           <Text style={{ fontWeight: "bold", color: "white" }}>
-            Welcome <Text>{Tokendata.name} </Text>!{" "}
+            Welcome Clinic!{" "}
           </Text>
-          {}
         </View>
         <View style={{ marginTop: 0, alignSelf: "center" }}>
           <Text
@@ -106,17 +64,18 @@ const Homeuser = ({ navigation }) => {
             <Text style={{ color: "white", fontSize: 35 }}>A</Text>pp
           </Text>
         </View>
+
         <View style={styles.record}>
           {/* 1 */}
           <Pressable
             // style={[styles.button, styles.buttonClose]}
             onPress={() => {
               axios
-                .get(`${myURL}/OnlyUserRoutes/profile?my_ID=${Tokendata._id}`)
+                .get(`${myURL}/Clinic/clinicProfile?my_ID=${Tokendata._id}`)
                 .then((res) => {
                   console.log("match User ID" + res.data);
                   setCheckProfile(res.data);
-                  navigation.navigate("UserProfile", { token: Tokendata });
+                  navigation.navigate("ClinicProfile", { token: Tokendata });
                 })
                 .catch((err) => {
                   console.log(err);
@@ -141,7 +100,7 @@ const Homeuser = ({ navigation }) => {
               <Text
                 style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
               >
-                Personal
+                Clinic
               </Text>
               <Text style={{ color: "white" }}>Profile</Text>
             </View>
@@ -149,7 +108,7 @@ const Homeuser = ({ navigation }) => {
           {/* 2 */}
           <Pressable
             // style={[styles.button, styles.buttonClose]}
-            onPress={() => navigation.navigate("Family")}
+            onPress={() => setModalVisible(!modalVisible)}
           >
             <View
               style={{
@@ -162,13 +121,17 @@ const Homeuser = ({ navigation }) => {
                 marginTop: 20,
               }}
             >
-              <MaterialIcons name="family-restroom" size={45} color="white" />
+              <Ionicons
+                name="md-shield-checkmark-sharp"
+                size={45}
+                color="white"
+              />
               <Text
                 style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
               >
-                Family
+                Vaccine
               </Text>
-              <Text style={{ color: "white" }}>Profile</Text>
+              <Text style={{ color: "white" }}>Availabalities</Text>
             </View>
           </Pressable>
           {/* 3 */}
@@ -187,18 +150,18 @@ const Homeuser = ({ navigation }) => {
                 marginTop: 20,
               }}
             >
-              <MaterialIcons name="schedule" size={45} color="white" />
+              <FontAwesome name="calendar-check-o" size={45} color="white" />
               <Text
                 style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
               >
-                Schedule
+                Appointment
               </Text>
-              <Text style={{ color: "white" }}>Profile</Text>
+              <Text style={{ color: "white" }}>Management</Text>
             </View>
           </Pressable>
 
           {/* 4 */}
-          <Pressable
+          {/* <Pressable
             // style={[styles.button, styles.buttonClose]}
             onPress={() => setModalVisible(!modalVisible)}
           >
@@ -220,10 +183,10 @@ const Homeuser = ({ navigation }) => {
                 News
               </Text>
             </View>
-          </Pressable>
+          </Pressable> */}
 
           {/* 5 */}
-          <Pressable
+          {/* <Pressable
             // style={[styles.button, styles.buttonClose]}
             onPress={() => setModalVisible(!modalVisible)}
           >
@@ -245,7 +208,7 @@ const Homeuser = ({ navigation }) => {
                 Clinic
               </Text>
             </View>
-          </Pressable>
+          </Pressable> */}
 
           {/* 6 */}
           <Pressable
@@ -263,18 +226,18 @@ const Homeuser = ({ navigation }) => {
                 marginTop: 20,
               }}
             >
-              <FontAwesome5 name="print" size={45} color="white" />
+              <FontAwesome5 name="shopping-cart" size={45} color="white" />
               <Text
                 style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
               >
-                PDF
+                Order
               </Text>
-              <Text style={{ color: "white" }}>Printout</Text>
+              <Text style={{ color: "white" }}>Vaccine</Text>
             </View>
           </Pressable>
 
           {/* 7 */}
-          <Pressable
+          {/* <Pressable
             // style={[styles.button, styles.buttonClose]}
             onPress={() => setModalVisible(!modalVisible)}
           >
@@ -293,14 +256,14 @@ const Homeuser = ({ navigation }) => {
               <Text
                 style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
               >
-                Alert
+                ADD
               </Text>
-              <Text style={{ color: "white" }}>System</Text>
+              <Text style={{ color: "white" }}>Vaccine</Text>
             </View>
-          </Pressable>
+          </Pressable> */}
 
           {/* 8 */}
-          <Pressable
+          {/* <Pressable
             // style={[styles.button, styles.buttonClose]}
             onPress={() => setModalVisible(!modalVisible)}
           >
@@ -323,10 +286,10 @@ const Homeuser = ({ navigation }) => {
               </Text>
               <Text style={{ color: "white" }}>Vaccine</Text>
             </View>
-          </Pressable>
+          </Pressable> */}
 
           {/* 9 */}
-          <Pressable
+          {/* <Pressable
             // style={[styles.button, styles.buttonClose]}
             onPress={() => setModalVisible(!modalVisible)}
           >
@@ -349,18 +312,14 @@ const Homeuser = ({ navigation }) => {
               </Text>
               <Text style={{ color: "white" }}>Appointment</Text>
             </View>
-          </Pressable>
+          </Pressable> */}
+          <ClinicModel
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            token={Tokendata}
+          />
         </View>
       </ScrollView>
-      {/* Profile MODEL start */}
-
-      <PersonalModel
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        token={Tokendata}
-      />
-      {/* token={token} */}
-      {/* Profile Model End */}
     </View>
     // </SafeAreaView>
   );
@@ -368,19 +327,17 @@ const Homeuser = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   top: {
-    flex: 0.9 / 10,
+    flex: 0.3 / 10,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginLeft: 25,
-    marginRight: 25,
+    margin: 25,
     alignContent: "space-around",
     TextColor: "white",
   },
   slider: {
     flex: 2.5 / 10,
     backgroundColor: "white",
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
+    margin: 0,
   },
   record: {
     flex: 1.5 / 10,
@@ -393,6 +350,63 @@ const styles = StyleSheet.create({
   },
   //
   //
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    flex: 9 / 10,
+    width: "90%",
+    margin: 5,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "white",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    marginTop: 20,
+    // backgroundColor: 'white',
+    borderWidth: 2,
+    borderColor: "#2196F3",
+    padding: 15,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  input: {
+    backgroundColor: "white",
+    width: "90%",
+    height: 40,
+    alignSelf: "center",
+    borderRadius: 5,
+    paddingLeft: 10,
+    borderWidth: 2,
+    borderColor: "gray",
+  },
 });
 
-export default Homeuser;
+export default Homeclinic;

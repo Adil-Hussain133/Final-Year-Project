@@ -20,7 +20,7 @@ import myURL from "../../services/myurls";
 import PersonalModelProfile from "../../components/user/PersonalModelProfile";
 
 import { useRoute } from "@react-navigation/native";
-const UserProfile = ({ navigation, token_id }) => {
+const ClinicProfile = ({ navigation, token_id }) => {
   const route = useRoute();
   let Token = route.params?.token;
   console.log("tok", Token._id);
@@ -28,12 +28,12 @@ const UserProfile = ({ navigation, token_id }) => {
   const [resData, setresData] = useState([]);
 
   useEffect(() => {
-    getUserProfile();
+    getClinicProfile();
   }, []);
 
-  const getUserProfile = () => {
+  const getClinicProfile = () => {
     axios
-      .get(`${myURL}/OnlyUserRoutes/profile?my_ID=${Token._id}`)
+      .get(`${myURL}/Clinic/clinicProfile?my_ID=${Token._id}`)
       .then((res) => {
         console.log("match User ID" + res.data);
         setresData(res.data);
@@ -60,7 +60,7 @@ const UserProfile = ({ navigation, token_id }) => {
           >
             <Pressable
               onPress={() => {
-                navigation.navigate("Homeuser");
+                navigation.navigate("Homeclinic");
               }}
             >
               <Ionicons
@@ -109,14 +109,12 @@ const UserProfile = ({ navigation, token_id }) => {
                 onPress={() => {
                   resData._id
                     ? axios
-                        .delete(
-                          `${myURL}/OnlyUserRoutes/profile/${resData._id}`
-                        )
+                        .delete(`${myURL}/Clinic/clinnicProfile/${resData._id}`)
                         .then((res) => {
                           console.log(res.data);
                           console.log("Profile Save!! ");
                           Alert.alert("Delete Record");
-                          navigation.navigate("Homeuser");
+                          navigation.navigate("Homeclinic");
                         })
                         .catch((err) => {
                           console.log(err);
@@ -170,22 +168,11 @@ const UserProfile = ({ navigation, token_id }) => {
               }}
             ></View>
             {/* Second field */}
-            <Text style={{ color: "gray" }}>Age:</Text>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              {resData.age}
-            </Text>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                marginTop: 10,
-                marginBottom: 10,
-                borderBottomColor: "#ACA5A5",
-              }}
-            ></View>
+
             {/* Second field */}
-            <Text style={{ color: "gray" }}>Gender:</Text>
+            <Text style={{ color: "gray" }}>Location:</Text>
             <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              {resData.gender}
+              {resData.location}
             </Text>
             <View
               style={{
@@ -195,32 +182,7 @@ const UserProfile = ({ navigation, token_id }) => {
                 borderBottomColor: "#ACA5A5",
               }}
             ></View>
-            {/* Second field */}
-            <Text style={{ color: "gray" }}>Allergies:</Text>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              {resData.allergies}
-            </Text>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                marginTop: 10,
-                marginBottom: 10,
-                borderBottomColor: "#ACA5A5",
-              }}
-            ></View>
-            {/* Second field */}
-            <Text style={{ color: "gray" }}>Medical:</Text>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-              {resData.medical}
-            </Text>
-            <View
-              style={{
-                borderBottomWidth: 1,
-                marginTop: 10,
-                marginBottom: 10,
-                borderBottomColor: "#ACA5A5",
-              }}
-            ></View>
+
             {/*  */}
             {/* <Text style={{color:"gray"}}>Email:</Text>
                               <Text style={{fontSize:16,fontWeight:'bold'}}>Sp20-BCS-149@gmail.com</Text>
@@ -243,4 +205,4 @@ const UserProfile = ({ navigation, token_id }) => {
   );
 };
 
-export default UserProfile;
+export default ClinicProfile;

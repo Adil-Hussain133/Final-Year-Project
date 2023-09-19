@@ -1,6 +1,4 @@
 {
-    "db" : "mongodb://0.0.0.0:27017/mad" ,
-    "jwtPrivateKey" :"someprivatekey"
-
-
+  "db": "mongodb://0.0.0.0:27017/mad",
+  "jwtPrivateKey": "someprivatekey"
 }

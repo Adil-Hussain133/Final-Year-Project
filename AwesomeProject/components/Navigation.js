@@ -14,12 +14,14 @@ import Homeadmin from "../Screen/admin/Homeadmin";
 //
 import DeliveryBottomNavigation from "../Screen/delivery/bottomnavition";
 import AdminBottomNavigation from "../Screen/admin/bottomnavition";
+import ClinicBottomNavigation from "../Screen/Clinic/bottomnavition";
 import UserBottomNavigation from "../Screen/user/bottomnavition";
 
 //
 import AdminDrawer from "../Screen/admin/Drawernavigation";
 import UserDrawer from "../Screen/user/Drawernavigation";
 import DeliveryDrawer from "../Screen/delivery/Drawernavigation";
+import ClinicDrawer from "../Screen/Clinic/Drawernavigation";
 
 // all inside compoents
 import UserProfile from "../Screen/user/Profile";
@@ -59,10 +61,15 @@ const Navigation = () => {
           component={AdminBottomNavigation}
         />
         <Stack.Screen
+          name="ClinicBottomNavigation"
+          component={ClinicBottomNavigation}
+        />
+        <Stack.Screen
           name="UserBottomNavigation"
           component={UserBottomNavigation}
         />
         <Stack.Screen name="AdminDrawer" component={AdminDrawer} />
+        <Stack.Screen name="ClinicDrawer" component={ClinicDrawer} />
         <Stack.Screen name="UserDrawer" component={UserDrawer} />
         <Stack.Screen name="DeliveryDrawer" component={DeliveryDrawer} />
         {/* all user components */}

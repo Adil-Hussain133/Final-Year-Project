@@ -2,7 +2,11 @@ const { required } = require("@hapi/joi");
 var express = require("express");
 var router = express.Router();
 
-var { Profile, validate, Profile } = require("../../model/UserProfile");
+var {
+  Profile,
+  validate,
+  Profile,
+} = require("../../../model/ClinicModel/clinicProfile");
 
 // add a new record
 router.post("/", async (req, res) => {
@@ -12,13 +16,10 @@ router.post("/", async (req, res) => {
   profile.my_ID = req.body.my_ID;
   profile.my_ROLE = req.body.my_ROLE;
   profile.name = req.body.name;
-  profile.gender = req.body.gender;
-  profile.age = req.body.age;
   profile.cnic = req.body.cnic;
   profile.country = req.body.country;
   profile.phoneno = req.body.phoneno;
-  profile.medical = req.body.medical;
-  profile.allergies = req.body.allergies;
+  profile.location = req.body.location;
 
   await profile.save();
   return res.send(profile);
@@ -28,16 +29,16 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   const my_ID = req.query.my_ID;
   try {
-    const user = await Profile.findOne({ my_ID: my_ID });
+    const clinic = await Profile.findOne({ my_ID: my_ID });
 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    if (!clinic) {
+      return res.status(404).json({ error: "Clinic not found" });
     }
 
     // const parsedData = JSON.parse(user.jsonData); // Parse JSON string
 
     // res.json(parsedData);
-    res.json(user);
+    res.json(clinic);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
@@ -50,14 +51,10 @@ router.put("/:id", async (req, res) => {
   profile.my_ID = req.body.my_ID;
   profile.my_ROLE = req.body.my_ROLE;
   profile.name = req.body.name;
-  profile.gender = req.body.gender;
-  profile.age = req.body.age;
   profile.cnic = req.body.cnic;
   profile.country = req.body.country;
   profile.phoneno = req.body.phoneno;
-  profile.medical = req.body.medical;
-  profile.allergies = req.body.allergies;
-
+  profile.location = req.body.location;
   await profile.save();
   return res.send(profile);
 });
