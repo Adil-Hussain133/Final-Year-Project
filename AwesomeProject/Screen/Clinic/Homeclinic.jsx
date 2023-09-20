@@ -32,6 +32,24 @@ const Homeclinic = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    getLoggedInClinic();
+  }, []);
+
+  getLoggedInClinic = async () => {
+    try {
+      const storedToken = await AsyncStorage.getItem("token");
+      console.log("Retrieved token:", storedToken);
+      setTokenData(jwtDecode(storedToken));
+      //setTokenData(storedToken);  //older
+
+      return storedToken;
+    } catch (error) {
+      console.error("Error retrieving token:", error);
+      return null;
+    }
+  };
+
   return (
     // <SafeAreaView>
     <View style={{ flex: 1, backgroundColor: "#329998" }}>
